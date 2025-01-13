@@ -37,9 +37,25 @@ function drawGraph() {
         loadingDiv.querySelector("p").innerText = `Loading graph: ${percentage}%`;
     });
 
-    network.once("stabilizationIterationsDone", function () {
+    network.once("stabilized", function () {
+        // Fit the graph into view with some padding
+        network.fit({ animation: true, maxZoomLevel: 0.8 });
+    });
+    
+    network.once("stabilizationIterationsDone", function () {        
         loadingDiv.style.display = "none"; // Hide loading spinner
         container.style.display = "block"; // Show graph
+    });
+
+    // Zoom controls
+    document.getElementById("zoom-in").addEventListener("click", function () {
+        const scale = network.getScale();
+        network.moveTo({ scale: scale * 1.2 }); // Zoom in by 20%
+    });
+
+    document.getElementById("zoom-out").addEventListener("click", function () {
+        const scale = network.getScale();
+        network.moveTo({ scale: scale / 1.2 }); // Zoom out by 20%
     });
 
     // Event for tooltip

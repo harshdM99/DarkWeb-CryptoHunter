@@ -3,8 +3,9 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #f7f7f7;
     color: #333;
+    line-height: 1.6;
 }
 
 header {
@@ -12,6 +13,8 @@ header {
     color: #fff;
     text-align: center;
     padding: 1rem;
+    font-size: 1rem;
+    font-weight: bold;
 }
 
 .container {
@@ -23,7 +26,7 @@ header {
 
 #graph-section {
     flex: 2;
-    min-width: 300px;
+    min-width: 400px;
     background: #fff;
     padding: 1rem;
     border-radius: 8px;
@@ -36,6 +39,7 @@ header {
     height: 60vh; 
     /* border: 1px solid #ddd; */
     border-radius: 8px;
+    display: none;
 }
 
 #explanations-section {
@@ -64,6 +68,8 @@ footer {
     align-items: center;
     justify-content: center;
     height: 400px;
+    height: 100%;
+    text-align: center;
 }
 
 #spinner {
@@ -73,6 +79,34 @@ footer {
     width: 50px;
     height: 50px;
     animation: spin 1s linear infinite;
+}
+
+#zoom-controls {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    z-index: 10;
+}
+
+.zoom-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #333;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+}
+
+.zoom-btn:hover {
+    background-color: #555;
 }
 
 @keyframes spin {

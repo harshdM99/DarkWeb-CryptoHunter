@@ -11,7 +11,7 @@
 </head>
 <body>
     <header>
-        <h1>Dark Web Crypto Hunter</h1>
+        <h1>Bitcoin Address Visualization</h1>
     </header>
     
     <main class="container">
@@ -23,7 +23,6 @@
             <ul>
                 <li><strong>Nodes:</strong> Represent individual Bitcoin addresses.</li>
                 <li><strong>Edges:</strong> Indicate transactions between two addresses.</li>
-                <li><strong>Color Coding:</strong> Node colors categorize addresses based on their roles (e.g., sender, receiver).</li>
             </ul>
             <h3>Insights</h3>
             <p>Hover over a node to see its associated address and connections. Use the graph to identify significant wallet addresses, clusters, and transaction patterns.</p>
@@ -36,11 +35,16 @@
             </div>
 
             <div id="network"></div>
+
+            <div id="zoom-controls">
+                <button id="zoom-in" class="zoom-btn">+</button>
+                <button id="zoom-out" class="zoom-btn">-</button>
+            </div>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2025 Made By Harshdeep Mishra</p>
+        <p>&copy; Made By Harshdeep</p>
     </footer>
 
     <script src="js/script.js"></script>
