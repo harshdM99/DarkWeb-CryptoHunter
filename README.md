@@ -17,7 +17,9 @@ A project designed to crawl the dark web to extract Bitcoin wallet addresses and
 - **Tor Browser**: Required for crawling `.onion` websites. Install it from [Tor Project](https://www.torproject.org/).
 - **Python**: Version 3.7 or higher.
 - **MongoDB**: Install and set up MongoDB for storing crawled data.
-- **GeckoDriver**: Required for controlling the Firefox browser used by `tbselenium`. Download it from [Mozilla GeckoDriver Releases](https://github.com/mozilla/geckodriver/releases).
+- **GeckoDriver**: Required for controlling the Firefox browser used by `tbselenium`. Download it from [Mozilla GeckoDriver Releases](https://github.com/mozilla/geckodriver/releases). 
+  - **Important**: Ensure that the GeckoDriver is added to your system's `PATH` variable. This step is **compulsory** for the application to work correctly.
+
 
 ### Installation
 
@@ -86,14 +88,10 @@ DarkWebCryptoHunter/
 ## **Further Development**  
 While the current implementation provides static data visualization, the following enhancements can be added:
 
-### **Dynamic Data Fetching**  
-- Integrate the frontend with the backend to dynamically fetch Bitcoin transaction data for any wallet address.
+1. **Dynamic Data Fetching**: Integrate the frontend with the backend to dynamically fetch Bitcoin transaction data for any wallet address.
 
-### **Real-Time Crawling**  
-- Enable live crawling of the dark web for updated Bitcoin transaction data.
+2. **Real-Time Crawling**: Enable live crawling of the dark web for updated Bitcoin transaction data.
 
-### **Advanced Analytics**  
-- Add statistical analysis features to identify suspicious patterns automatically.
+3. **Advanced Analytics**: Add statistical analysis features to identify suspicious patterns automatically.
 
-### **Depth Customization**  
-- Allow users to customize the depth of transaction analysis in the graph.
+4. **Depth Customization**: Allow users to customize the depth of transaction analysis in the graph.
