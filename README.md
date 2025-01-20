@@ -1,4 +1,4 @@
-# DarkWebCryptoHunter
+# Dark Web Bitcoin Gathering and Analysis
 
 A project designed to crawl the dark web to extract Bitcoin wallet addresses and visualize their transaction graphs for analysis.
 
@@ -66,32 +66,29 @@ open index.html
 ```plaintext
 DarkWebCryptoHunter/
 │
-├── frontend/                      # Frontend for visualization
-│   ├── index.html                 # Main webpage
+├── frontend/                         # Frontend for visualization
+│   ├── index.html                    # Main webpage
 │   ├── css/
-│   │   └── style.css              # Styles for the website
+│   │   └── style.css                 # Styles for the website
 │   ├── js/
-│   │   └── script.js              # Logic for graph visualization
-│   └── assets/
-│       └── images/                # Images and static assets
+│   │   └── script.js                 # Logic for graph visualization
 │
-├── backend/                       # Backend for crawling and processing data
-│   ├── crawler.py                 # Dark web crawler
-│   ├── database.py                # Handles database operations
+├── backend/                          # Backend for crawling and processing data
+│   ├── crawler.py                    # Dark web crawler
+│   ├── database.py                   # Handles database operations
 │   ├── bitcoin_address_extractor.py  # Extracts Bitcoin addresses from raw data
-│   ├── config.py                  # Configuration constants
-│   └── main.py                    # Entry point for backend logic
+│   ├── config.py                     # Configuration constants
+|   ├── analysis.py                   # Analyze the extracted addresses to generate graphs
+│   └── main.py                       # Entry point for backend logic
 │
-└── README.md                      # Project documentation
+├── requirements.txt                  # Python dependencies
+└── README.md                         # Project documentation
 ```
 
 ## **Further Development**  
 While the current implementation provides static data visualization, the following enhancements can be added:
 
 1. **Dynamic Data Fetching**: Integrate the frontend with the backend to dynamically fetch Bitcoin transaction data for any wallet address.
-
 2. **Real-Time Crawling**: Enable live crawling of the dark web for updated Bitcoin transaction data.
-
 3. **Advanced Analytics**: Add statistical analysis features to identify suspicious patterns automatically.
-
 4. **Depth Customization**: Allow users to customize the depth of transaction analysis in the graph.
