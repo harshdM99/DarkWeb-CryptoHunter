@@ -1,4 +1,4 @@
-# Dark Web Bitcoin Gathering and Analysis
+# Dark Web Bitcoin Crawling and Visualization
 
 A project designed to crawl the dark web to extract Bitcoin wallet addresses and visualize their transaction graphs for analysis.
 
