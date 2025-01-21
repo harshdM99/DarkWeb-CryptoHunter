@@ -70,8 +70,8 @@ DarkWebCryptoHunter/
 │   ├── index.html                    # Main webpage
 │   ├── css/
 │   │   └── style.css                 # Styles for the website
-│   ├── js/
-│   │   └── script.js                 # Logic for graph visualization
+│   └── js/
+│       └── script.js                 # Logic for graph visualization
 │
 ├── backend/                          # Backend for crawling and processing data
 │   ├── crawler.py                    # Dark web crawler
@@ -88,7 +88,6 @@ DarkWebCryptoHunter/
 ## **Further Development**  
 While the current implementation provides static data visualization, the following enhancements can be added:
 
-1. **Dynamic Data Fetching**: Integrate the frontend with the backend to dynamically fetch Bitcoin transaction data for any wallet address.
-2. **Real-Time Crawling**: Enable live crawling of the dark web for updated Bitcoin transaction data.
-3. **Advanced Analytics**: Add statistical analysis features to identify suspicious patterns automatically.
-4. **Depth Customization**: Allow users to customize the depth of transaction analysis in the graph.
+1. **Real-Time Crawling**: Enable live crawling of the dark web for updated Bitcoin transaction data.
+2. **Advanced Analytics**: Add statistical analysis features to identify suspicious patterns automatically.
+3. **Depth Customization**: Allow users to customize the depth of transaction analysis in the graph.
