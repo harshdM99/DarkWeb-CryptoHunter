@@ -1,0 +1,23 @@
+services:
+  mongodb:
+    image: mongo:4.4
+    container_name: darkweb_mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  crawler:
+    build: .
+    container_name: darkweb_crawler
+    depends_on:
+      - mongodb
+    environment:
+      - TOR_PATH=/opt/tor-browser_en-US/
+    volumes:
+      - .:/app
+    restart: always
+
+volumes:
+  mongo_data:
