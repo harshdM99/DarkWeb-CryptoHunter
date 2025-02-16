@@ -6,11 +6,12 @@ from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.firefox.service import Service
 from selenium.common.exceptions import NoSuchElementException
 from bitcoin_address_extractor import BitcoinAddressExtractor
-from config import CRAWL_LIMIT
 
 class Crawler:
-    def __init__(self, db):
+    def __init__(self, db, CRAWL_LIMIT):
         self.db = db
+        self.crawl_limit = CRAWL_LIMIT
+
         options = Options()
         options.headless = True  # Run in headless mode (no GUI)
         
@@ -28,10 +29,10 @@ class Crawler:
         print("Driver successfully started! Printing Variable driver : ", self.driver)
 
     def crawl(self, url):
-        for _ in range(CRAWL_LIMIT):
+        for _ in range(self.crawl_limit):
             try:
                 self.driver.get(url)
-                all_links = self.get_all_links()
+                self.store_all_links()
                 text = self.get_page_text()
                 addresses = BitcoinAddressExtractor.extract_addresses(text)
 
@@ -47,15 +48,13 @@ class Crawler:
                 self.db.update_link_visited(url)
                 url = self.db.get_next_link()
 
-    def get_all_links(self):
-        all_links = []
+    def store_all_links(self):
         elems = self.driver.find_elements_by_xpath("//a[@href]")
         for elem in elems:
             link = elem.get_attribute("href")
             match = re.search('.onion', link)
             if match:
-                all_links.append(link)
-        return all_links
+                self.db.insert_link(link, 0)
 
     def get_page_text(self):
         return self.driver.find_element_by_xpath("/html/body").text

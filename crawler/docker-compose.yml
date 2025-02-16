@@ -8,12 +8,16 @@ services:
     volumes:
       - mongo_data:/data/db
       - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro  # Add init script
+    env_file:
+      - .env  # Load .env variables for MongoDB init script
 
   crawler:
     build: .
     container_name: darkweb_crawler
     depends_on:
       - mongodb
+    env_file:
+      - .env  # Load .env variables for the crawler
     volumes:
       - .:/app
     # restart: always
