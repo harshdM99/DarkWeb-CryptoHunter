@@ -1,10 +1,10 @@
 from database import Database
 from crawler import Crawler
-from config import DB_NAME, TOR_PATH, URL
+from config import DB_NAME, URL
 
 def main():
     db = Database(DB_NAME)
-    crawler = Crawler(TOR_PATH, db)
+    crawler = Crawler(db)
 
     # Insert the initial seed URL into the database
     db.insert_link(URL, visited=1)

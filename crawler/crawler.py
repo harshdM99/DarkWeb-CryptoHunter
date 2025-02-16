@@ -1,15 +1,16 @@
 # crawler.py
 import re
+import os
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.firefox.service import Service
 from selenium.common.exceptions import NoSuchElementException
 from bitcoin_address_extractor import BitcoinAddressExtractor
 from config import CRAWL_LIMIT
 
 class Crawler:
-    def __init__(self, tor_path, db):
-        # self.driver = TorBrowserDriver(tor_path)
-        # self.db = db
+    def __init__(self, db):
+        self.db = db
         options = Options()
         options.headless = True  # Run in headless mode (no GUI)
         
@@ -19,8 +20,12 @@ class Crawler:
         options.set_preference("network.proxy.socks_port", 9050)
         options.set_preference("network.proxy.socks_remote_dns", True)
         
+        os.environ["DISPLAY"] = ":99"
+
         # Start a headless Firefox browser
-        self.driver = webdriver.Firefox(options=options)
+        service = Service("/usr/bin/geckodriver")
+        self.driver = webdriver.Firefox(service=service, options=options)
+        print("Driver successfully started! Printing Variable driver : ", self.driver)
 
     def crawl(self, url):
         for _ in range(CRAWL_LIMIT):

@@ -13,11 +13,9 @@ services:
     container_name: darkweb_crawler
     depends_on:
       - mongodb
-    environment:
-      - TOR_PATH=/opt/tor-browser_en-US/
     volumes:
       - .:/app
-    restart: always
+    # restart: always
 
 volumes:
   mongo_data:
