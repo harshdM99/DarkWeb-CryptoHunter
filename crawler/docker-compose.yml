@@ -7,9 +7,6 @@ services:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
-      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro  # Add init script
-    env_file:
-      - .env  # Load .env variables for MongoDB init script
 
   crawler:
     build: .
