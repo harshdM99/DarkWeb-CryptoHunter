@@ -1,3 +1,4 @@
 tbselenium
 selenium
 pymongo
+python-dotenv
