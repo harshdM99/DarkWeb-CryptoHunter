@@ -1,11 +1,29 @@
 from pymongo import MongoClient
 
 class Database:
-    def __init__(self, db_name, crawling_table, address_table):
+    def __init__(self, DB_NAME, CRAWLING_TABLE, ADDRESS_TABLE, SEED_URL):
         self.client = MongoClient('mongodb', 27017)
-        self.db = self.client[db_name]
-        self.address_table = self.db[address_table]
-        self.crawling_table = self.db[crawling_table]
+        self.db = self.client[DB_NAME]
+
+        self.create_collections(CRAWLING_TABLE, ADDRESS_TABLE)
+
+        self.address_table = self.db[ADDRESS_TABLE]
+        self.crawling_table = self.db[CRAWLING_TABLE]
+
+        # Insert seed URL if no unvisited links exist
+        if self.crawling_table.count_documents({}) == 0:
+            self.crawling_table.insert_one({"link": SEED_URL, "visited": 0})
+            print(f"Seed URL inserted: {SEED_URL}")
+
+    def create_collections(self, CRAWLING_TABLE, ADDRESS_TABLE):
+        """Ensure collections exist and insert a seed URL if needed."""
+        if CRAWLING_TABLE not in self.db.list_collection_names():
+            self.db.create_collection(CRAWLING_TABLE)
+            print(f"Created collection: {CRAWLING_TABLE}")
+
+        if ADDRESS_TABLE not in self.db.list_collection_names():
+            self.db.create_collection(ADDRESS_TABLE)
+            print(f"Created collection: {ADDRESS_TABLE}")
 
     def insert_link(self, link, visited=0):
         self.crawling_table.insert_one({"link": link, "visited": visited})
