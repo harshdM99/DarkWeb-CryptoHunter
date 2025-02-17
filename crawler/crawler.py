@@ -10,7 +10,7 @@ from bitcoin_address_extractor import BitcoinAddressExtractor
 class Crawler:
     def __init__(self, db, CRAWL_LIMIT):
         self.db = db
-        self.crawl_limit = CRAWL_LIMIT
+        self.crawl_limit = int(CRAWL_LIMIT)
 
         options = Options()
         options.headless = True  # Run in headless mode (no GUI)
