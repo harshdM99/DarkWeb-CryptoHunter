@@ -6,6 +6,8 @@ from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.firefox.service import Service
 from selenium.common.exceptions import NoSuchElementException
 from bitcoin_address_extractor import BitcoinAddressExtractor
+from selenium.webdriver.common.by import By
+import time
 
 class Crawler:
     def __init__(self, db, CRAWL_LIMIT):
@@ -31,6 +33,10 @@ class Crawler:
     def crawl(self, url):
         for _ in range(self.crawl_limit):
             try:
+                if url == None:
+                    print("No more URL found. exiting.....")
+                    return
+
                 self.driver.get(url)
                 self.store_all_links()
                 text = self.get_page_text()
@@ -49,7 +55,11 @@ class Crawler:
                 url = self.db.get_next_link()
 
     def store_all_links(self):
-        elems = self.driver.find_elements_by_xpath("//a[@href]")
+        if "neterror" in self.driver.current_url:
+            print(f"Page load error detected: {self.driver.current_url}")
+            return  
+
+        elems = self.driver.find_elements(By.XPATH, "//a[@href]")
         for elem in elems:
             link = elem.get_attribute("href")
             match = re.search('.onion', link)
@@ -57,10 +67,10 @@ class Crawler:
                 self.db.insert_link(link, 0)
 
     def get_page_text(self):
-        return self.driver.find_element_by_xpath("/html/body").text
+        return self.driver.find_element(By.XPATH, "/html/body").text
 
     def get_metadata(self):
         try:
-            return self.driver.find_element_by_xpath("//meta[@name='description']").get_attribute("content")
+            return self.driver.find_element(By.XPATH, "//meta[@name='description']").get_attribute("content")
         except NoSuchElementException:
             return []

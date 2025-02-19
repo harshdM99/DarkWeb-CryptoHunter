@@ -26,11 +26,20 @@ class Database:
             print(f"Created collection: {ADDRESS_TABLE}")
 
     def insert_link(self, link, visited=0):
-        self.crawling_table.insert_one({"link": link, "visited": visited})
+        if not self.crawling_table.find_one({"link": link}):
+            self.crawling_table.insert_one({"link": link, "visited": visited})
+        else:
+            print(f"Link already exists, skipping: {link}")
 
     def get_next_link(self):
         query = {"visited": 0}
-        return self.crawling_table.find_one(query)['link']
+        result = self.crawling_table.find_one(query)
+    
+        if result:
+            return result['link']
+        else:
+            print("No unvisited links found in the database.")
+            return None
 
     def update_link_visited(self, link):
         query = {"link": link}
