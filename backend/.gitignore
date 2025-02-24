@@ -15,7 +15,7 @@ db.sqlite3
 *.pyc
 
 # Ignore Django Migrations (Keep empty __init__.py)
-*/migrations/*  
+*/migrations/*
 !*/migrations/__init__.py
 
 # Static and Media Files
