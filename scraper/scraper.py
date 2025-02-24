@@ -101,8 +101,11 @@ class BitcoinScraper:
 if __name__ == "__main__":
     scraper = BitcoinScraper()
     btc_addresses = scraper.load("btc_addr.json")
+    # btc_addresses = ["18gs3qDmznjKagNJrcgN2T3aUe3McG7iKJ"]
 
     for addr in btc_addresses:
-        scraper.scrape_and_store(addr, 3)
+        scraper.visited_addresses.clear()
+        print("Processing new address : ", addr)
+        scraper.scrape_and_store(addr, 1)
     
     scraper.close() 
