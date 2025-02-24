@@ -1,0 +1,44 @@
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+venv/
+env/
+
+# Django & Database Files
+db.sqlite3
+*.sqlite3
+*.log
+*.pot
+*.pyc
+
+# Ignore Django Migrations (Keep empty __init__.py)
+*/migrations/*  
+!*/migrations/__init__.py
+
+# Static and Media Files
+staticfiles/
+media/
+
+# Environment Variables & Secrets
+.env
+*.env
+
+# Ignore IDE and Editor Configurations
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ignore Compiled Files and Caches
+node_modules/
+*.bak
+*.tmp
+
+# Ignore Docker and Build Files
+docker-compose.override.yml
+docker-compose.override.yaml
+*.dockerfile
+*.tar
