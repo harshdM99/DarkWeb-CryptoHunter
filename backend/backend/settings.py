@@ -71,14 +71,13 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+# Use Neo4j instead of SQL database
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.dummy',  # ✅ Dummy backend since we use Neo4j
+    }
+}
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 # Neo4j Database Connection
 NEO4J_URI = os.getenv("NEO4J_URI", "bolt://neo4j:7687")  # Use Docker hostname
 NEO4J_USER = os.getenv("NEO4J_USER", "neo4j")

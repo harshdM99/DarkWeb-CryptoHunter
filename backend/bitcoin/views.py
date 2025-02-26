@@ -17,11 +17,14 @@ def get_transactions(request, address):
     transactions = neo4j_conn.query(query, {"address": address})
     return JsonResponse({"transactions": transactions})
 
+from django.http import JsonResponse
+from .neo4j_connection import neo4j_conn
+
 def get_transaction_graph(request, address):
-    """Fetch transactions and return as a graph structure."""
+    """Fetch transactions and return in NVL-friendly format."""
     query = """
-    MATCH (a:Address {id: $address})-[r:SENT*1..3]->(b)
-    RETURN a.id AS sender, b.id AS receiver, r[0].amount AS amount, r[0].txid AS txid
+    MATCH (a:Address {id: $address})-[r:SENT*1..2]->(b)
+    RETURN a.id AS sender, b.id AS receiver, r[0].amount AS amount
     """
     transactions = neo4j_conn.query(query, {"address": address})
 
@@ -34,8 +37,7 @@ def get_transaction_graph(request, address):
         links.append({
             "source": tx["sender"],
             "target": tx["receiver"],
-            "amount": tx["amount"],
-            "txid": tx["txid"]
+            "amount": tx["amount"]
         })
 
     return JsonResponse({

@@ -1,0 +1,4 @@
+django
+neo4j
+django-cors-headers
+python-dotenv

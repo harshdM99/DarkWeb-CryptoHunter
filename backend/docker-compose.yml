@@ -1,7 +1,7 @@
 services:
   neo4j:
     image: neo4j:latest
-    container_name: bitcoin_graph
+    container_name: bitcoin_graphs_store
     # restart: always
     ports:
       - "7474:7474"  # Web UI
@@ -9,7 +9,7 @@ services:
     environment:
       - NEO4J_AUTH=neo4j/password
     volumes:
-      - neo4j_data:/data
+      - scraper_neo4j_data:/data
     networks:
       - bitcoin_network
 
@@ -32,3 +32,7 @@ services:
 networks:
   bitcoin_network:
     driver: bridge
+
+volumes:
+  scraper_neo4j_data:
+    external: true
