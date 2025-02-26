@@ -18,6 +18,9 @@ services:
   frontend:
     build: ./frontend
     container_name: neo4j_react
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
     ports:
       - "3000:3000" # React app accessible at localhost:3000
     networks:
