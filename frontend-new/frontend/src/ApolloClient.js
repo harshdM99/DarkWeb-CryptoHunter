@@ -1,7 +1,7 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 
 const client = new ApolloClient({
-  uri: "http://neo4j:4000/graphql", // ✅ Connects to Neo4j inside Docker
+  uri: "http://localhost:4000/graphql", // ✅ Connects to Node.js GraphQL server
   cache: new InMemoryCache(),
 });
 
