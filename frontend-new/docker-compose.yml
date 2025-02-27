@@ -5,15 +5,25 @@ services:
     ports:
       - "7474:7474" # Neo4j Browser
       - "7687:7687" # Bolt Protocol for Neo4j connections
-      - "4000:4000" # GraphQL API
     environment:
       - NEO4J_AUTH=neo4j/password
-      - NEO4JLABS_PLUGINS=["apoc", "graphql"]
     volumes:
       - scraper_neo4j_data:/data
-      - ./neo4j-init.cypher:/docker-entrypoint-initdb.d/neo4j-init.cypher
     networks:
       - bitcoin_network
+  
+  backend:
+    build: ./backend
+    container_name: neo4j_backend
+    volumes:
+      - ./backend:/app 
+      - /app/node_modules
+    ports:
+      - "4000:4000"  # ✅ Exposes GraphQL API
+    networks:
+      - bitcoin_network
+    depends_on:
+      - neo4j
 
   frontend:
     build: ./frontend
@@ -22,7 +32,7 @@ services:
       - ./frontend:/app
       - /app/node_modules
     ports:
-      - "3000:3000" # React app accessible at localhost:3000
+      - "5173:5173" # React app accessible at localhost:3000
     networks:
       - bitcoin_network
     depends_on:
