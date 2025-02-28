@@ -3,8 +3,8 @@ import { useQuery, gql } from "@apollo/client";
 import CytoscapeComponent from "react-cytoscapejs";
 
 const GET_GRAPH_DATA = gql`
-  query GetTransactions($address: ID!) {
-    address(id: $address) {
+  query GetTransactions {
+    addresses(id: $id) {
       id
       transactions {
         amount
@@ -18,7 +18,7 @@ const GET_GRAPH_DATA = gql`
 
 const Graph = ({ address }) => {
     const { loading, error, data } = useQuery(GET_GRAPH_DATA, {
-        variables: { address },
+        variables: { id: address },
     });
 
     if (loading) return <p>Loading...</p>;
