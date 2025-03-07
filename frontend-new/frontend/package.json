@@ -16,7 +16,8 @@
     "graphql": "^16.10.0",
     "react": "^19.0.0",
     "react-cytoscapejs": "^2.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "vis-network": "^9.1.9"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",

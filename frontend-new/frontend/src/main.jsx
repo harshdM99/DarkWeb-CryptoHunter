@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
-import './index.css'
+// import './index.css'
 import App from './App.jsx'
 
 // Create Apollo Client instance

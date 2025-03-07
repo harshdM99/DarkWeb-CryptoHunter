@@ -7,17 +7,6 @@ import Graph from "./Graph";
 loadDevMessages();
 loadErrorMessages();
 
-// const GET_ADDRESSES = gql`
-//   query {
-//     addresses {
-//       id
-//       transactions {
-//         amount
-//       }
-//     }
-//   }
-// `;
-
 const GET_ADDRESSES = gql`
   query {
     addresses {
