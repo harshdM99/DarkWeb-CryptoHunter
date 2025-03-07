@@ -1,0 +1,10 @@
+type Address @node {
+	addressesSent: [Address!]! @relationship(type: "SENT", direction: IN, properties: "SentProperties")
+	id: String!
+	sentAddresses: [Address!]! @relationship(type: "SENT", direction: OUT, properties: "SentProperties")
+}
+
+type SentProperties @relationshipProperties {
+	amount: Float!
+	txid: String!
+}

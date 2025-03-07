@@ -1,8 +1,12 @@
-const { ApolloServer } = require("@apollo/server");
-const { startStandaloneServer } = require("@apollo/server/standalone");
-const { Neo4jGraphQL } = require("@neo4j/graphql");
-const neo4j = require("neo4j-driver");
-require("dotenv").config();
+import { ApolloServer } from "@apollo/server";
+import { startStandaloneServer } from "@apollo/server/standalone";
+import { Neo4jGraphQL } from "@neo4j/graphql";
+import neo4j from "neo4j-driver";
+import dotenv from "dotenv";
+import fs from "fs";
+import { toGraphQLTypeDefs } from "@neo4j/introspector";
+
+dotenv.config();
 
 // Connect to Neo4j
 const driver = neo4j.driver(
@@ -11,21 +15,41 @@ const driver = neo4j.driver(
 );
 
 // Define GraphQL Schema
-const typeDefs = `
-    type Query {
-        transactions(where: TransactionWhere): [Transaction!]!
-        addresses(where: AddressWhere): [Address!]!
-    }
+// type Transaction @node {
+//   amount: Float
+//   receiver: Address @relationship(type: "SENT", direction: IN)
+//   sender: Address @relationship(type: "SENT", direction: OUT)
+// }
 
+// sentTransactions: [Address!]! @relationship(type: "SENT", direction: OUT)
+// receivedTransactions: [Address!]! @relationship(type: "SENT", direction: IN)
+
+const typeDefs = `
     type Address @node {
         id: ID!
-        transactions: [Transaction!]! @relationship(type: "SENT", direction: OUT)
+        sentAddresses: [Address!]! @relationship(type: "SENT", direction: OUT, properties: "SentProperties")
+        addressesSent: [Address!]! @relationship(type: "SENT", direction: IN, properties: "SentProperties")
     }
 
-    type Transaction @node {
-        amount: Float
-        receiver: Address @relationship(type: "SENT", direction: IN)
-        sender: Address @relationship(type: "SENT", direction: OUT)
+    type SentProperties @relationshipProperties {
+        amount: Float!
+        txid: String!
+    }
+
+    type Query {
+      addresses: [Address!]!
+        @cypher(statement: "MATCH (a:Address) RETURN a LIMIT 20", columnName: "a")
+      address(id: ID!): Address 
+        @cypher(statement: "MATCH (a:Address {id: $id}) RETURN a", columnName: "a")
+      transactions(id: ID!): [Transaction!]!
+        @cypher(statement: "MATCH (a:Address {id: $id})-[r:SENT]->(b:Address) RETURN { sender: a.id, receiver: b.id, amount: r.amount, txid: r.txid } AS transactions", columnName: "transactions")
+    }
+
+    type Transaction {
+      sender: ID!
+      receiver: ID!
+      amount: Float!
+      txid: String!
     }
 `;
 
@@ -33,48 +57,36 @@ const typeDefs = `
   try {
     console.log("⏳ Initializing Neo4jGraphQL schema...");
 
-    const resolvers = {
-      Query: {
-        addresses: async (_source, _args, context) => {
-          if (!context.driver) {
-            console.error("❌ ERROR: Neo4j Driver is missing in context!");
-            throw new Error("Neo4j Driver not available.");
-          }
+    // const resolvers = {
+    //   Query: {
+    //     transactions: async (_, { id }, context) => {
+    //       const session = context.driver.session();
+    //       try {
+    //         const query = `
+    //           MATCH (a:Address {id: "${id}")-[r:SENT]->(b:Address)
+    //           RETURN a.id AS sender, b.id AS receiver, r.amount AS amount, r.txid AS txid
+    //           `;
+    //         const result = await session.run(query);
 
-          const session = context.driver.session();
-          try {
-            console.log("🔍 Fetching Addresses...");
-            const result = await session.run(
-              "MATCH (a:Address) RETURN a.id AS id LIMIT 10"
-            );
-            return result.records.map((record) => ({
-              id: record.get("id"),
-            }));
-          } finally {
-            await session.close();
-          }
-        },
-
-        transactions: async (_source, _args, context) => {
-          const session = context.driver.session();
-          try {
-            console.log("🔍 Fetching Transactions...");
-            const result = await session.run(
-              "MATCH (t:Transaction) RETURN t.amount AS amount LIMIT 10"
-            );
-            return result.records.map((record) => ({
-              amount: record.get("amount"),
-            }));
-          } finally {
-            await session.close();
-          }
-        },
-      },
-    };
+    //         return result.records.map((record) => ({
+    //           sender: record.get("sender"),
+    //           receiver: record.get("receiver"),
+    //           amount: record.get("amount"),
+    //           txid: record.get("txid"),
+    //         }));
+    //       } catch (error) {
+    //         console.error("❌ Neo4j Query Error:", error);
+    //         return [];
+    //       } finally {
+    //         await session.close();
+    //       }
+    //     },
+    //   },
+    // };
 
     const neoSchema = new Neo4jGraphQL({
       typeDefs,
-      resolvers,
+      // resolvers,
       driver,
       debug: true,
     });

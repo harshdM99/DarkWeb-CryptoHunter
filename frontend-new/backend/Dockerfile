@@ -5,6 +5,7 @@ WORKDIR /app
 
 # Copy package.json and install dependencies
 COPY package.json ./
+RUN npm --version
 RUN npm install
 
 # Expose frontend port
