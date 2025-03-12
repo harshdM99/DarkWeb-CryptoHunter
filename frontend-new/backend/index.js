@@ -43,6 +43,20 @@ const typeDefs = `
         @cypher(statement: "MATCH (a:Address {id: $id}) RETURN a", columnName: "a")
       transactions(id: ID!): [Transaction!]!
         @cypher(statement: "MATCH (a:Address {id: $id})-[r:SENT]->(b:Address) RETURN { sender: a.id, receiver: b.id, amount: r.amount, txid: r.txid } AS transactions", columnName: "transactions")
+      transactions_2(id: ID!): [Transaction!]!
+        @cypher(
+          statement:"""
+          MATCH (a:Address {id: $id})-[:SENT]->(b:Address)
+          OPTIONAL MATCH (b)-[r:SENT]->(c:Address)
+          RETURN { 
+              sender: b.id, 
+              receiver: c.id, 
+              amount: r.amount, 
+              txid: r.txid 
+          } AS transactions
+          """,
+          columnName: "transactions"
+        )
     }
 
     type Transaction {
