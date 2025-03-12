@@ -16,20 +16,20 @@ const GET_ADDRESSES = gql`
 `;
 
 const App = () => {
-    const { loading, error, data } = useQuery(GET_ADDRESSES);
+    // const { loading, error, data } = useQuery(GET_ADDRESSES);
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error.message}</p>;
+    // if (loading) return <p>Loading...</p>;
+    // if (error) return <p>Error: {error.message}</p>;
 
     return (
         <div>
-            <h2>Bitcoin Transactions</h2>
+            {/* <h2>Bitcoin Transactions</h2> */}
             <Graph address={"18gs3qDmznjKagNJrcgN2T3aUe3McG7iKJ"}/>
-            <ul>
+            {/* <ul>
                 {data.addresses.map((address) => (
                     <li key={address.id}>{address.id}</li>
                 ))}
-            </ul>
+            </ul> */}
         </div>
     );
 };
