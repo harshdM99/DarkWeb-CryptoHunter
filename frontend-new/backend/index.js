@@ -46,14 +46,14 @@ const typeDefs = `
       transactions_2(id: ID!): [Transaction!]!
         @cypher(
           statement:"""
-          MATCH (a:Address {id: $id})-[:SENT]->(b:Address)
-          OPTIONAL MATCH (b)-[r:SENT]->(c:Address)
-          RETURN { 
-              sender: b.id, 
-              receiver: c.id, 
-              amount: r.amount, 
-              txid: r.txid 
-          } AS transactions
+            MATCH (a:Address {id: $id})-[r:SENT]->(b:Address)
+            WHERE a.id <> b.id
+            WITH a.id AS sender, b.id AS receiver, SUM(r.amount) AS total_amount
+            RETURN {
+                sender: sender,
+                receiver: receiver, 
+                amount: total_amount
+            } AS transactions
           """,
           columnName: "transactions"
         )
