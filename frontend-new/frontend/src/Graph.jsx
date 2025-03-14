@@ -16,22 +16,24 @@ import "./css/Graph.css"; // ✅ Import CSS
 const GET_GRAPH_DATA = gql`
   query GetTransactions($id: ID!) {
     transactions_2(id: $id) {
-      amount
-      txid
+      sender 
       receiver
+      amount
     }
   }
 `;
 
 const Graph = ({ address }) => {
+    const [selectedAddress, setSelectedAddress] = useState("18gs3qDmznjKagNJrcgN2T3aUe3McG7iKJ");
     const { loading, error, data } = useQuery(GET_GRAPH_DATA, {
-        variables: { id: address },
+      variables: { id: selectedAddress },
     });
 
+    const addressList = ["18gs3qDmznjKagNJrcgN2T3aUe3McG7iKJ", "3DKavLP7CPWPqF4Mr3MyEpxbMNKwVKduZt", "15w4L77KbGUzij3pnt5fgmyEFCWNabegB5", "1JRGrUdT6wFn1A5r6sW21dJQwtvC742cQv", "3JTFyDPUE64f6rAqpcDR6ozj2gC4siy6am", "3FLWEkf3REFVNxZutjxA4eXeijzS9kycFi", "18bctM9KQG3e5hHP8r1w5NQPd8CCByiNAf", "1uaPF2fsmYmkXv3XswELowupQDaQ45GNn", "3GFTt3etxbQXLz35ccNcm8BHV6xy5LUeoH", "12h8BbuTYYC6zWpTNfbYoGv4LpVGv38MUx", "1BiBLE4U2fLzhr5i2nt1Uxz57CzWktdTSv", "19ESxFFN5fUs95xJFmNZnF2juPZnm53eq1", "16MSWSXgSd8YGJY6vbN9o2JipXbsoFmLtR", "1NvhNrBe2YorNfRtxe7ftjHgz4CkRuPFtC", "12pWtTFEQeUcv96UdcwgU9JfUUme9hq3XH", "1GaGNqVF3Bj7pCXNv1wurPtyoS7GNgq8wd", "1NqWh9SqL8hRgA2RCisb3rjRusEbPLdH7D", "16P3pyRABTSsBFaKYfWpTv4nUGDbFqUKvn", "3AdCmv14y8HdWcNakMvsSo3NpezjpvwNtn", "1B7E2o6ALyCtANbJt4KQNdM4BGzYCvyeLR", "1ECaLb6QMWQeA1mRMffXdPNgpSUSqsqtyh"]
     const containerRef = useRef(null);
     const networkRef = useRef(null);
     const [loadingProgress, setLoadingProgress] = useState(0);
-    const [selectedNode, setSelectedNode] = useState(null);  // ✅ Pop-up state
+    const [selectedNode, setSelectedNode] = useState(null);
 
     useEffect(() => {
         if (loading || error || !data) return;
@@ -46,12 +48,12 @@ const Graph = ({ address }) => {
 
         // Create nodes & edges datasets
         const nodes = new Map();
-        nodes.set(address, { id: address, label: "●", color: "#007bff", size: 25, font: { color: "white" } });
+        const edges = []
         
-        nodes.set(address, {
-            id: address,
+        nodes.set(selectedAddress, {
+            id: selectedAddress,
             label: "●", 
-            title: `Address: ${address}`,  // ✅ Show address on hover
+            title: `Address: ${selectedAddress}`,  // ✅ Show address on hover
             color: {
                 background: "#28a745",   // ✅ Green for main node (Bootstrap Success Green)
                 border: "#155724"        // ✅ Darker green border for contrast
@@ -61,14 +63,7 @@ const Graph = ({ address }) => {
             font: { color: "white", size: 18, face: "Arial" }
         });
 
-        // const edges = data.transactions.map(tx => {
-        //     if (!nodes.has(tx.receiver)) {
-        //         nodes.set(tx.receiver, { id: tx.receiver, label: "●", color: "#ED5853", size: 20, font: { color: "white" } });
-        //     }
-        //     return { from: address, to: tx.receiver, arrows: "to", color: "#F9F2E5" };
-        // });
-
-        data.transactions.forEach(tx => {
+        data.transactions_2.forEach( (tx, index) => {
             if (!nodes.has(tx.receiver)) {
                 nodes.set(tx.receiver, {
                     id: tx.receiver,
@@ -83,27 +78,40 @@ const Graph = ({ address }) => {
                     font: { color: "white", size: 16, face: "Arial" }
                 });
             }
+            
+            edges.push({
+                from: tx.sender,
+                to: tx.receiver,
+                arrows: { to: { enabled: true, scaleFactor: 1.5 } },
+                label: `${parseFloat(tx.amount).toFixed(4)} BTC`,
+                font: { color: "#F9B500", size: 14, background: "white", align: "top" },
+                color: { color: "#F9B500", highlight: "#F90", inherit: false },
+                width: 2,
+            });
+    
         });
 
-        const edges = data.transactions.map((tx, index) => ({
-            from: address,
-            to: tx.receiver,
-            arrows: {
-                to: { enabled: true, scaleFactor: 1.5 }
-            },
-            label: `${parseFloat(tx.amount).toFixed(4)} BTC`,
-            font: { color: "#000", size: 14, background: "white", align: "top", },
-            color: {
-                color: "#F9B500",
-                highlight: "#F90",
-                inherit: false
-            },
-            width: 2,
-            smooth: {
-                type: "curvedCW",    // ✅ Makes sure edges **curve instead of overlap**
-                // roundness: 0.3 + (index % 2) * 0.1  // ✅ Adds slight **random offset** to avoid collision
-            },
-        }));
+        // const edges = data.transactions.map((tx, index) => ({
+        //     from: address,
+        //     to: tx.receiver,
+        //     arrows: {
+        //         to: { enabled: true, scaleFactor: 1.5 }
+        //     },
+        //     label: `${parseFloat(tx.amount).toFixed(4)} BTC`,
+        //     font: { color: "#000", size: 14, background: "white", align: "top", },
+        //     color: {
+        //         color: "#F9B500",
+        //         highlight: "#F90",
+        //         inherit: false
+        //     },
+        //     width: 2,
+        //     smooth: {
+        //         type: "curvedCW",    // ✅ Makes sure edges **curve instead of overlap**
+        //         // roundness: 0.3 + (index % 2) * 0.1  // ✅ Adds slight **random offset** to avoid collision
+        //     },
+        // }));
+
+        console.log("✅ Transactions Data:", data.transactions_2);
 
         const graphData = {
             nodes: Array.from(nodes.values()),
@@ -132,6 +140,7 @@ const Graph = ({ address }) => {
                 borderWidth: 2,
             },
             edges: {
+                hidden:false,
                 arrows: { to: { enabled: true, scaleFactor: 1.5 } },
                 color: { color: "#F9B500", highlight: "#F90" },
                 width: 2,
@@ -139,6 +148,7 @@ const Graph = ({ address }) => {
                     type: "curvedCW",  // ✅ **Curves edges to avoid overlap**
                     roundness: 0.1     // ✅ Adjust roundness to make edges visible
                 },
+                chosen: false,
             },
         };
 
@@ -195,6 +205,14 @@ const Graph = ({ address }) => {
                 <h1>Bitcoin Address Visualization</h1>
             </header>
 
+            <label>Select Address:</label>
+            <select value={selectedAddress} onChange={(e) => setSelectedAddress(e.target.value)}>
+                <option value="">-- Select Address --</option>
+                {addressList.map((address) => (
+                    <option key={address} value={address}>{address}</option>
+                ))}
+            </select>
+
             <main className="container">
                 <section id="explanations-section">
                     <h2>Understanding the Graph</h2>
@@ -216,7 +234,7 @@ const Graph = ({ address }) => {
                         <li><strong>Zoom Controls:</strong> Use the + and - buttons to navigate.</li>
                     </ul>
                 </section>
-
+                {selectedAddress && (
                 <section id="graph-section">
                     {/* ✅ Show Loading Spinner Before Graph Loads */}
                     <div id="loading" style={{ display: loadingProgress === 100 ? "none" : "flex" }}>
@@ -233,6 +251,7 @@ const Graph = ({ address }) => {
                         <button id="zoom-out" className="zoom-btn">-</button>
                     </div>
                 </section>
+                )}
             </main>
 
             {/* ✅ Pop-up to show selected node details */}
