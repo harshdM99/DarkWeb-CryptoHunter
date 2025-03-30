@@ -12,31 +12,31 @@ services:
     networks:
       - bitcoin_network
   
-  backend:
-    build: ./backend
-    container_name: neo4j_backend
-    volumes:
-      - ./backend:/app 
-      - /app/node_modules
-    ports:
-      - "4000:4000"  # ✅ Exposes GraphQL API
-    networks:
-      - bitcoin_network
-    depends_on:
-      - neo4j
+  # backend:
+  #   build: ./backend
+  #   container_name: neo4j_backend
+  #   volumes:
+  #     - ./backend:/app 
+  #     - /app/node_modules
+  #   ports:
+  #     - "4000:4000"  # ✅ Exposes GraphQL API
+  #   networks:
+  #     - bitcoin_network
+  #   depends_on:
+  #     - neo4j
 
-  frontend:
-    build: ./frontend
-    container_name: neo4j_react
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    ports:
-      - "5173:5173" # React app accessible at localhost:3000
-    networks:
-      - bitcoin_network
-    depends_on:
-      - neo4j
+  # frontend:
+  #   build: ./frontend
+  #   container_name: neo4j_react
+  #   volumes:
+  #     - ./frontend:/app
+  #     - /app/node_modules
+  #   ports:
+  #     - "5173:5173" # React app accessible at localhost:3000
+  #   networks:
+  #     - bitcoin_network
+  #   depends_on:
+  #     - neo4j
 
 networks:
   bitcoin_network:
