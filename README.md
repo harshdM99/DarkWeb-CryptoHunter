@@ -50,7 +50,7 @@ A full-stack system that extracts Bitcoin addresses from the dark web, analyzes 
 ## Frontend
 
 - **React + Vite** – Frontend for displaying transaction graphs.
-- **Vis.js / Cytoscape.js** – Graph visualization for Bitcoin transactions.
+- **Vis.js** – Graph visualization for Bitcoin transactions.
 - **Apollo Client** – Fetches GraphQL data from the backend.
 
 ## Crawling & Scraping
