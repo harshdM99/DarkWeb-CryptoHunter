@@ -61,15 +61,6 @@ A full-stack system that extracts Bitcoin addresses from the dark web, analyzes 
 
 ---
 
-# Setup Instructions
-
-## 1. Clone the Repository
-
-```bash
-git clone https://github.com/yourusername/dark-web-crypto-tracker.git
-cd dark-web-crypto-tracker
-```
-
 ## Future Improvements
 
 - Expand support for Ethereum and other cryptocurrencies.  
