@@ -6,24 +6,24 @@ A full-stack system that extracts Bitcoin addresses from the dark web, analyzes 
 
 ![Architecture Diagram](arch.png)
 
-## 1️⃣ Crawling & Data Collection Layer
+## 1. Crawling & Data Collection Layer
 
 - **Dark Web Crawler**: Uses Tor, Selenium, and BeautifulSoup to scrape .onion sites and extract Bitcoin addresses.
 - **Amazon SQS**: A queueing service that temporarily holds the Bitcoin addresses collected by the crawler before they are processed.
 - **MongoDB**: Stores the raw crawling data, including links and extracted Bitcoin addresses.
 
-## 2️⃣ Processing Layer
+## 2. Processing Layer
 
 - **Listener**: Retrieves Bitcoin addresses from Amazon SQS.
 - **Blockchain Transactions Scraper**: Fetches transaction history from the Bitcoin ledger for collected addresses.
 - **Publisher**: Structures the scraped data and stores it in a Neo4j database, representing transactions as a graph.
 
-## 3️⃣ Storage Layer
+## 3. Storage Layer
 
 - **MongoDB**: Stores raw data obtained from crawling the dark web, including extracted Bitcoin addresses and metadata.
 - **Neo4j AuraDB**: Graph database that efficiently stores and queries Bitcoin transactions as a connected network.
 
-## 4️⃣ Frontend & API Layer
+## 4. Frontend & API Layer
 
 - **Neo4j AuraDB**: Stores transaction relationships in a graph format for efficient querying.
 - **Backend (Node.js + Apollo GraphQL)**: Acts as a middleware, allowing the frontend to fetch transaction data using GraphQL queries.
@@ -63,7 +63,7 @@ A full-stack system that extracts Bitcoin addresses from the dark web, analyzes 
 
 # Setup Instructions
 
-## 1️⃣ Clone the Repository
+## 1. Clone the Repository
 
 ```bash
 git clone https://github.com/yourusername/dark-web-crypto-tracker.git
@@ -72,9 +72,9 @@ cd dark-web-crypto-tracker
 
 ## Future Improvements
 
-🔹 Expand support for Ethereum and other cryptocurrencies.  
-🔹 Integrate Machine Learning to detect suspicious transactions.  
-🔹 Implement alerts for flagged or high-risk transactions.
+- Expand support for Ethereum and other cryptocurrencies.  
+- Integrate Machine Learning to detect suspicious transactions.  
+- Implement alerts for flagged or high-risk transactions.
 
 ### The Graph Displays:
 
